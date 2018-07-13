@@ -6,7 +6,7 @@
 #include <time.h>
 
 
-int body[1314][2], x=10, y=12, n=1, len=3, i, j, dir=3, xa, ya, sc=0, sl=100, ac=1;
+int body[1314][2], x, y, n, len, i, j, dir, xa, ya, sc, sl, ac;
 char tecla,arrows[2],option[]={0,0};
 
 typedef struct player{
@@ -15,7 +15,7 @@ typedef struct player{
 }player;
 
 void print(){
-     for (i=3;i<=76;i++){
+     for (i=3;i<=77;i++){
          gotoxy(i,3);
          putchar(205);
          gotoxy(i,23);
@@ -24,16 +24,16 @@ void print(){
      for (i=4;i<=22;i++){
          gotoxy(2,i);
          putchar(186);
-         gotoxy(77,i);
+         gotoxy(78,i);
          putchar(186);
      }
      gotoxy(2,3);
      putchar(201);
      gotoxy(2,23);
      putchar(200);
-     gotoxy(77,3);
+     gotoxy(78,3);
      putchar(187);
-     gotoxy(77,23);
+     gotoxy(78,23);
      putchar(188);
 }
 
@@ -191,11 +191,13 @@ void score(){
 }
 
 void lose(){
+     char key;
      gotoxy(35,12);
      textcolor(4);
      printf("You Lose");
      textcolor(15);
-     getch();
+     while(key!=13)
+         key=getch();
      for(i=35;i<=42;i++){
          gotoxy(i,12);
          printf(" ");
@@ -259,6 +261,7 @@ void consulte(){
         key=getch();
     return;
 }
+
 void enterp(){
     FILE *scores;
     FILE *faux;
@@ -323,7 +326,6 @@ void enterp(){
     
     remove("c:\\snake\\score.snk");
     rename("c:\\snake\\auxiliar.snk", "c:\\snake\\score.snk");
-    getch();
     return;
 }
 
@@ -360,7 +362,7 @@ void highscore(){
         printf("You haven't reached the highest scores");
         gotoxy(25,18);
         printf("Press enter to return");
-        key=0;
+        
         while (key!=13)
             key=getch();
     }
@@ -369,6 +371,14 @@ void highscore(){
 }
 
 void game(){
+    len=3;
+    n=1;
+    sc=0;
+    x=10; 
+    y=12;
+    dir=3;
+    sl=100;
+    ac=1;
     srand(time(NULL));
     clrscr();
     print();
@@ -409,7 +419,6 @@ int main(){
 
         if (option[1]==0){
             game();
-            getchar();
         }
         else if(option[1]==1)
             instructions();
