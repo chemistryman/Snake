@@ -6,7 +6,7 @@
 #include <time.h>
 
 
-int body[1314][2], x, y, n, len, i, j, dir, xa, ya, sc, sl, ac;
+int  x, y, n, len, i, j, dir, xa, ya, sc, sl, ac;
 char tecla,arrows[2],option[]={0,0};
 
 typedef struct player{
@@ -91,7 +91,7 @@ void instructions(){
      return;
 }
 
-void savep(){
+void savep(int body[][2]){
      body[n][0]=x;
      body[n][1]=y;
      n++;
@@ -99,14 +99,14 @@ void savep(){
          n=1;
 }
 
-void printb(){
+void printb(int body[][2]){
      for(i=1;i<len;i++){
          gotoxy(body[i][0],body[i][1]);
          putchar(207);
      }
 }
 
-void deleteb(){
+void deleteb(int body[][2]){
      for(i=1;i<len;i++){
          gotoxy(body[i][0],body[i][1]);
          printf(" ");
@@ -149,7 +149,7 @@ void limite (){
             y=4;
 }
 
-bool Rapple(){
+bool Rapple(int body[][2]){
     for(j=len-1;j>0;j--){
         if(body[j][0]==xa&&body[j][1]==ya)
             return true;
@@ -157,7 +157,7 @@ bool Rapple(){
     return false;
 }
 
-void apple(){
+void apple(int body[1314][2]){
     if(len==3||(x==xa&&y==ya)){
         if(len>3)
             sc++;
@@ -165,7 +165,7 @@ void apple(){
            xa=(rand()%71)+4;
            ya=(rand()%18)+4;
            len++;
-        }while(Rapple());
+        }while(Rapple(body));
         gotoxy(xa,ya);
         textcolor(4);
         putchar(254);
@@ -173,7 +173,7 @@ void apple(){
     }
 }
 
-bool GOver(){
+bool GOver(int body[][2]){
     for(j=len-1;j>0;j--){
         if(body[j][0]==x&&body[j][1]==y)
             return true;
@@ -370,7 +370,16 @@ void highscore(){
     return;
 }
 
+void clearb(int body[1314][2]){
+     for(j=0;j<=1313;j++){
+         body[j][0]=0;
+         body[j][1]=0;
+     }
+     return;
+}
+
 void game(){
+    int body[1314][2];
     len=3;
     n=1;
     sc=0;
@@ -382,18 +391,19 @@ void game(){
     srand(time(NULL));
     clrscr();
     print();
-    while(tecla!=27&&!GOver()){
+    clearb(body);
+    while(tecla!=27&&!GOver(body)){
         score();
-        apple();
-        deleteb();
-        savep();
-        printb();
+        apple(body);
+        deleteb(body);
+        savep(body);
+        printb(body);
         Sleep(sl);
         ctr();
         avance();
         limite();
     }
-    if(GOver())
+    if(GOver(body))
         lose();
         highscore();
 }
